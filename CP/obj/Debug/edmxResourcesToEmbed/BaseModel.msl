@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище virus_dbModelContainer" CdmEntityContainer="virus_dbEntities2">
+    <EntitySetMapping Name="activity_log">
+      <EntityTypeMapping TypeName="virus_dbModel.activity_log">
+        <MappingFragment StoreEntitySet="activity_log">
+          <ScalarProperty Name="log_id" ColumnName="log_id" />
+          <ScalarProperty Name="victim_id" ColumnName="victim_id" />
+          <ScalarProperty Name="action_type" ColumnName="action_type" />
+          <ScalarProperty Name="action_details" ColumnName="action_details" />
+          <ScalarProperty Name="action_time" ColumnName="action_time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="encrypted_file">
+      <EntityTypeMapping TypeName="virus_dbModel.encrypted_file">
+        <MappingFragment StoreEntitySet="encrypted_file">
+          <ScalarProperty Name="file_id" ColumnName="file_id" />
+          <ScalarProperty Name="victim_id" ColumnName="victim_id" />
+          <ScalarProperty Name="file_path" ColumnName="file_path" />
+          <ScalarProperty Name="file_ext" ColumnName="file_ext" />
+          <ScalarProperty Name="file_size" ColumnName="file_size" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="victims">
+      <EntityTypeMapping TypeName="virus_dbModel.victim">
+        <MappingFragment StoreEntitySet="victim">
+          <ScalarProperty Name="victim_id" ColumnName="victim_id" />
+          <ScalarProperty Name="computer_name" ColumnName="computer_name" />
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="encryption_key" ColumnName="encryption_key" />
+          <ScalarProperty Name="files_count" ColumnName="files_count" />
+          <ScalarProperty Name="infected_time" ColumnName="infected_time" />
+          <ScalarProperty Name="status" ColumnName="status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

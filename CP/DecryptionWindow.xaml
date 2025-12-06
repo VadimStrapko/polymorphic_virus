@@ -1,0 +1,36 @@
+﻿<Window x:Class="CP.DecryptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="File Decryption" Height="250" Width="400"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock Text="Enter Decryption Key:" 
+                       FontSize="16" 
+                       FontWeight="Bold"
+                       Margin="0,0,0,10"/>
+
+            <TextBox x:Name="txtDecryptionKey" 
+                     FontSize="14" 
+                     Height="30" 
+                     Margin="0,0,0,20"
+                     Padding="5"/>
+
+            <Button x:Name="btnDecrypt" 
+                    Content="Decrypt Files" 
+                    Click="BtnDecrypt_Click" 
+                    Height="40" 
+                    FontSize="14"
+                    Background="#FF0078D7" 
+                    Foreground="White"
+                    FontWeight="Bold"/>
+
+            <TextBlock x:Name="txtStatus" 
+                       Margin="0,20,0,0" 
+                       FontSize="12" 
+                       TextWrapping="Wrap"
+                       Foreground="#FF666666"/>
+        </StackPanel>
+    </Grid>
+</Window>

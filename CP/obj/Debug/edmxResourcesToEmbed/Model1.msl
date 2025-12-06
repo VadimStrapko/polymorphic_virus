@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище virus_dbModelContainer" CdmEntityContainer="virus_dbEntities">
+    <EntitySetMapping Name="Victims">
+      <EntityTypeMapping TypeName="virus_dbModel.Victim">
+        <MappingFragment StoreEntitySet="Victims">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="computer" ColumnName="computer" />
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="encryption_key" ColumnName="encryption_key" />
+          <ScalarProperty Name="files_count" ColumnName="files_count" />
+          <ScalarProperty Name="infected_time" ColumnName="infected_time" />
+          <ScalarProperty Name="status" ColumnName="status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="AddVictim" FunctionName="Хранилище virus_dbModel.AddVictim" />
+  </EntityContainerMapping>
+</Mapping>

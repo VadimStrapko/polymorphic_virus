@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="virus_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="activity_log">
+    <Key>
+      <PropertyRef Name="log_id" />
+    </Key>
+    <Property Name="log_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="victim_id" Type="Int32" Nullable="false" />
+    <Property Name="action_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="action_details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="action_time" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="victim" Relationship="Self.FK__activity___victi__534D60F1" FromRole="activity_log" ToRole="victim" />
+  </EntityType>
+  <EntityType Name="encrypted_file">
+    <Key>
+      <PropertyRef Name="file_id" />
+    </Key>
+    <Property Name="file_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="victim_id" Type="Int32" Nullable="false" />
+    <Property Name="file_path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="file_ext" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="file_size" Type="Int64" />
+    <NavigationProperty Name="victim" Relationship="Self.FK__encrypted__victi__4F7CD00D" FromRole="encrypted_file" ToRole="victim" />
+  </EntityType>
+  <EntityType Name="victim">
+    <Key>
+      <PropertyRef Name="victim_id" />
+    </Key>
+    <Property Name="victim_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="computer_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="user_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="encryption_key" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="files_count" Type="Int32" />
+    <Property Name="infected_time" Type="DateTime" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="activity_log" Relationship="Self.FK__activity___victi__534D60F1" FromRole="victim" ToRole="activity_log" />
+    <NavigationProperty Name="encrypted_file" Relationship="Self.FK__encrypted__victi__4F7CD00D" FromRole="victim" ToRole="encrypted_file" />
+  </EntityType>
+  <Association Name="FK__activity___victi__534D60F1">
+    <End Role="victim" Type="Self.victim" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="activity_log" Type="Self.activity_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="victim">
+        <PropertyRef Name="victim_id" />
+      </Principal>
+      <Dependent Role="activity_log">
+        <PropertyRef Name="victim_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__encrypted__victi__4F7CD00D">
+    <End Role="victim" Type="Self.victim" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="encrypted_file" Type="Self.encrypted_file" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="victim">
+        <PropertyRef Name="victim_id" />
+      </Principal>
+      <Dependent Role="encrypted_file">
+        <PropertyRef Name="victim_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="virus_dbEntities2" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="activity_log" EntityType="Self.activity_log" />
+    <EntitySet Name="encrypted_file" EntityType="Self.encrypted_file" />
+    <EntitySet Name="victims" EntityType="Self.victim" />
+    <AssociationSet Name="FK__activity___victi__534D60F1" Association="Self.FK__activity___victi__534D60F1">
+      <End Role="victim" EntitySet="victims" />
+      <End Role="activity_log" EntitySet="activity_log" />
+    </AssociationSet>
+    <AssociationSet Name="FK__encrypted__victi__4F7CD00D" Association="Self.FK__encrypted__victi__4F7CD00D">
+      <End Role="victim" EntitySet="victims" />
+      <End Role="encrypted_file" EntitySet="encrypted_file" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

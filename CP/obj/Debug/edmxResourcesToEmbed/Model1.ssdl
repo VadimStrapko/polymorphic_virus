@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище virus_dbModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Victims">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="computer" Type="nvarchar" MaxLength="100" />
+    <Property Name="user_name" Type="nvarchar" MaxLength="100" />
+    <Property Name="encryption_key" Type="nvarchar" MaxLength="255" />
+    <Property Name="files_count" Type="int" />
+    <Property Name="infected_time" Type="datetime" />
+    <Property Name="status" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <Function Name="AddVictim" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="computer" Type="nvarchar" Mode="In" />
+    <Parameter Name="user_name" Type="nvarchar" Mode="In" />
+    <Parameter Name="encryption_key" Type="nvarchar" Mode="In" />
+    <Parameter Name="files_count" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="Хранилище virus_dbModelContainer">
+    <EntitySet Name="Victims" EntityType="Self.Victims" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

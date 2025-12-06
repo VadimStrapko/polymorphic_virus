@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище virus_dbModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="activity_log">
+    <Key>
+      <PropertyRef Name="log_id" />
+    </Key>
+    <Property Name="log_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="victim_id" Type="int" Nullable="false" />
+    <Property Name="action_type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="action_details" Type="nvarchar" MaxLength="500" />
+    <Property Name="action_time" Type="datetime" />
+  </EntityType>
+  <EntityType Name="encrypted_file">
+    <Key>
+      <PropertyRef Name="file_id" />
+    </Key>
+    <Property Name="file_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="victim_id" Type="int" Nullable="false" />
+    <Property Name="file_path" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="file_ext" Type="nvarchar" MaxLength="10" />
+    <Property Name="file_size" Type="bigint" />
+  </EntityType>
+  <EntityType Name="victim">
+    <Key>
+      <PropertyRef Name="victim_id" />
+    </Key>
+    <Property Name="victim_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="computer_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="user_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="encryption_key" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="files_count" Type="int" />
+    <Property Name="infected_time" Type="datetime" />
+    <Property Name="status" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <Association Name="FK__activity___victi__534D60F1">
+    <End Role="victim" Type="Self.victim" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="activity_log" Type="Self.activity_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="victim">
+        <PropertyRef Name="victim_id" />
+      </Principal>
+      <Dependent Role="activity_log">
+        <PropertyRef Name="victim_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__encrypted__victi__4F7CD00D">
+    <End Role="victim" Type="Self.victim" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="encrypted_file" Type="Self.encrypted_file" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="victim">
+        <PropertyRef Name="victim_id" />
+      </Principal>
+      <Dependent Role="encrypted_file">
+        <PropertyRef Name="victim_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище virus_dbModelContainer">
+    <EntitySet Name="activity_log" EntityType="Self.activity_log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="encrypted_file" EntityType="Self.encrypted_file" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="victim" EntityType="Self.victim" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__activity___victi__534D60F1" Association="Self.FK__activity___victi__534D60F1">
+      <End Role="victim" EntitySet="victim" />
+      <End Role="activity_log" EntitySet="activity_log" />
+    </AssociationSet>
+    <AssociationSet Name="FK__encrypted__victi__4F7CD00D" Association="Self.FK__encrypted__victi__4F7CD00D">
+      <End Role="victim" EntitySet="victim" />
+      <End Role="encrypted_file" EntitySet="encrypted_file" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

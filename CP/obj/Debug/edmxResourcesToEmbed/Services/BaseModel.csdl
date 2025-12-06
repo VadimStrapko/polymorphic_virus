@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="virus_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="activity_log">
+    <Key>
+      <PropertyRef Name="log_id" />
+    </Key>
+    <Property Name="log_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="victim_id" Type="Int32" Nullable="false" />
+    <Property Name="action_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="action_details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="action_time" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="victim" Relationship="Self.FK__activity___victi__656C112C" FromRole="activity_log" ToRole="victims" />
+  </EntityType>
+  <EntityType Name="encrypted_files">
+    <Key>
+      <PropertyRef Name="file_id" />
+    </Key>
+    <Property Name="file_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="victim_id" Type="Int32" Nullable="false" />
+    <Property Name="file_path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="file_ext" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="file_size" Type="Int64" />
+    <NavigationProperty Name="victim" Relationship="Self.FK__encrypted__victi__619B8048" FromRole="encrypted_files" ToRole="victims" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="victim">
+    <Key>
+      <PropertyRef Name="victim_id" />
+    </Key>
+    <Property Name="victim_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="computer_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="user_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="encryption_key" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="files_count" Type="Int32" />
+    <Property Name="infected_time" Type="DateTime" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="activity_log" Relationship="Self.FK__activity___victi__656C112C" FromRole="victims" ToRole="activity_log" />
+    <NavigationProperty Name="encrypted_files" Relationship="Self.FK__encrypted__victi__619B8048" FromRole="victims" ToRole="encrypted_files" />
+  </EntityType>
+  <Association Name="FK__activity___victi__656C112C">
+    <End Role="victims" Type="Self.victim" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="activity_log" Type="Self.activity_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="victims">
+        <PropertyRef Name="victim_id" />
+      </Principal>
+      <Dependent Role="activity_log">
+        <PropertyRef Name="victim_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__encrypted__victi__619B8048">
+    <End Role="victims" Type="Self.victim" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="encrypted_files" Type="Self.encrypted_files" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="victims">
+        <PropertyRef Name="victim_id" />
+      </Principal>
+      <Dependent Role="encrypted_files">
+        <PropertyRef Name="victim_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="virus_dbEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="activity_log" EntityType="Self.activity_log" />
+    <EntitySet Name="encrypted_files" EntityType="Self.encrypted_files" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="victims" EntityType="Self.victim" />
+    <AssociationSet Name="FK__activity___victi__656C112C" Association="Self.FK__activity___victi__656C112C">
+      <End Role="victims" EntitySet="victims" />
+      <End Role="activity_log" EntitySet="activity_log" />
+    </AssociationSet>
+    <AssociationSet Name="FK__encrypted__victi__619B8048" Association="Self.FK__encrypted__victi__619B8048">
+      <End Role="victims" EntitySet="victims" />
+      <End Role="encrypted_files" EntitySet="encrypted_files" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(virus_dbModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(virus_dbModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>

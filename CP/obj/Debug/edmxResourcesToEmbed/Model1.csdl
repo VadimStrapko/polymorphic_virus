@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="virus_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Victim">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="computer" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="user_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="encryption_key" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="files_count" Type="Int32" />
+    <Property Name="infected_time" Type="DateTime" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="virus_dbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Victims" EntityType="Self.Victim" />
+    <FunctionImport Name="AddVictim" ReturnType="Collection(Decimal)">
+      <Parameter Name="computer" Mode="In" Type="String" />
+      <Parameter Name="user_name" Mode="In" Type="String" />
+      <Parameter Name="encryption_key" Mode="In" Type="String" />
+      <Parameter Name="files_count" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+</Schema>
